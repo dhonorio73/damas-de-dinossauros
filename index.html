@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Damas de Dinossauros 3D - TEA Friendly</title>
+    <title>🦖 Damas de Dinossauros 3D 🦕</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1b4332, #2d6a4f);
+            background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            color: #f1f8e9;
+            color: #37474f;
         }
 
         h1 {
-            color: #95d5b2;
+            color: #2c3e50;
             margin-bottom: 5px;
             display: flex;
             align-items: center;
             gap: 12px;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             font-size: 2.2rem;
         }
 
@@ -31,13 +31,12 @@
             font-size: 1.25rem;
             font-weight: bold;
             margin-bottom: 20px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
+            padding: 10px 22px;
+            background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            border: 2px solid rgba(149, 213, 178, 0.4);
-            color: #d8f3dc;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            border: 2px solid #b0bec5;
+            color: #455a64;
         }
 
         .main-container {
@@ -49,21 +48,21 @@
         .casinha {
             width: 130px;
             height: 540px;
-            background: rgba(255, 255, 255, 0.92);
-            border: 4px solid #52b788;
+            background: #ffffff;
+            border: 4px solid #cfd8dc;
             border-radius: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 15px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
         }
 
         .casinha h3 {
-            font-size: 1rem;
+            font-size: 0.95rem;
             margin: 0 0 12px 0;
             text-align: center;
-            color: #1b4332;
+            color: #546e7a;
         }
 
         .casinha-content {
@@ -81,10 +80,11 @@
             display: grid;
             grid-template-columns: repeat(8, 65px);
             grid-template-rows: repeat(8, 65px);
-            border: 8px solid #081c15;
+            border: 8px solid #37474f;
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(0,0,0,0.1);
             overflow: hidden;
+            background-color: #fafafa;
         }
 
         .square {
@@ -97,34 +97,35 @@
             position: relative;
         }
 
+        /* Cores pastel suaves inspiradas no tema de quebra-cabeça TEA */
         .light {
-            background-color: #d8f3dc !important;
+            background-color: #f5f5f5 !important;
         }
 
         .dark {
-            background-color: #2d6a4f !important;
-            box-shadow: inset 0 6px 10px rgba(0,0,0,0.3);
+            background-color: #cfd8dc !important;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.08);
         }
 
         .square.selected {
-            background-color: #ffd166 !important;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+            background-color: #fff9c4 !important;
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.15);
         }
 
         .square.highlight {
-            background-color: #52b788 !important;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+            background-color: #c8e6c9 !important;
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.15);
         }
 
         @keyframes float3d {
-            0% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); filter: drop-shadow(0 8px 6px rgba(0,0,0,0.4)); }
-            50% { transform: translateY(-5px) rotateX(5deg) rotateY(3deg); filter: drop-shadow(0 14px 8px rgba(0,0,0,0.3)); }
-            100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); filter: drop-shadow(0 8px 6px rgba(0,0,0,0.4)); }
+            0% { transform: translateY(0px) rotate(0deg); filter: drop-shadow(0 6px 4px rgba(0,0,0,0.2)); }
+            50% { transform: translateY(-4px) rotate(2deg); filter: drop-shadow(0 10px 6px rgba(0,0,0,0.15)); }
+            100% { transform: translateY(0px) rotate(0deg); filter: drop-shadow(0 6px 4px rgba(0,0,0,0.2)); }
         }
 
         .dino-3d {
-            font-size: 42px;
-            animation: float3d 2.5s infinite ease-in-out;
+            font-size: 38px;
+            animation: float3d 3s infinite ease-in-out;
             display: inline-block;
             user-select: none;
             transition: transform 0.2s;
@@ -134,41 +135,40 @@
             transform: scale(1.15);
         }
 
-        /* Cores distintas otimizadas para foco e reconhecimento visual TEA */
+        /* Cores pastéis suaves para os dinossauros e blocos de quebra-cabeça TEA */
         .dino-green-team {
-            filter: drop-shadow(0 4px 5px rgba(0, 100, 0, 0.6)) brightness(1.1);
+            filter: hue-rotate(60deg) saturate(1.4) brightness(1.1);
         }
 
         .dino-blue-team {
-            filter: hue-rotate(190deg) saturate(2.5) drop-shadow(0 4px 5px rgba(0, 0, 150, 0.6)) brightness(1.2);
+            filter: hue-rotate(200deg) saturate(1.5) brightness(1.15);
         }
 
         .dino-sad {
-            font-size: 34px;
+            font-size: 30px;
             animation: none;
             user-select: none;
-            filter: grayscale(0.4) opacity(0.8);
+            filter: grayscale(0.5) opacity(0.75);
         }
 
         .btn-restart {
             margin-top: 25px;
-            background: linear-gradient(145deg, #52b788, #2d6a4f);
+            background: linear-gradient(145deg, #78909c, #455a64);
             color: white;
             border: none;
-            padding: 14px 28px;
-            font-size: 1.15rem;
+            padding: 12px 26px;
+            font-size: 1.1rem;
             font-weight: bold;
-            border-radius: 14px;
+            border-radius: 12px;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
             transition: all 0.2s;
-            border: 2px solid #b7e4c7;
         }
 
         .btn-restart:hover {
-            background: linear-gradient(145deg, #40916c, #1b4332);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            background: linear-gradient(145deg, #607d8b, #37474f);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
         .btn-restart:active {
@@ -179,18 +179,18 @@
 <body>
 
     <h1><span>🦖</span> Damas de Dinossauros 3D <span>🦕</span></h1>
-    <div id="status" class="status">Vez do Time: 🦖 T-Rex Verde</div>
+    <div id="status" class="status">Vez do Time: 🧩🦖 T-Rex Verde Suave</div>
 
     <div class="main-container">
         <div class="casinha">
-            <h3>🦕 Casinha Azul</h3>
+            <h3>🧩🦕 Casinha Azul Suave</h3>
             <div id="casinha-blue" class="casinha-content"></div>
         </div>
 
         <div id="board" class="board"></div>
 
         <div class="casinha">
-            <h3>🦖 Casinha Verde</h3>
+            <h3>🧩🦖 Casinha Verde Suave</h3>
             <div id="casinha-green" class="casinha-content"></div>
         </div>
     </div>
@@ -215,7 +215,7 @@
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(440, agora);
                 osc.frequency.exponentialRampToValueAtTime(587.33, agora + 0.1);
-                gain.gain.setValueAtTime(0.15, agora);
+                gain.gain.setValueAtTime(0.1, agora);
                 gain.gain.exponentialRampToValueAtTime(0.01, agora + 0.15);
                 osc.start(agora);
                 osc.stop(agora + 0.15);
@@ -224,7 +224,7 @@
                 osc.frequency.setValueAtTime(330, agora);
                 osc.frequency.setValueAtTime(440, agora + 0.08);
                 osc.frequency.setValueAtTime(659.25, agora + 0.16);
-                gain.gain.setValueAtTime(0.2, agora);
+                gain.gain.setValueAtTime(0.15, agora);
                 gain.gain.exponentialRampToValueAtTime(0.01, agora + 0.3);
                 osc.start(agora);
                 osc.stop(agora + 0.3);
@@ -286,10 +286,10 @@
                         
                         if (piece.player === 'green') {
                             dinoSpan.classList.add('dino-green-team');
-                            dinoSpan.innerHTML = piece.king ? '👑🦖' : '🦖';
+                            dinoSpan.innerHTML = piece.king ? '🧩👑🦖' : '🧩🦖';
                         } else {
                             dinoSpan.classList.add('dino-blue-team');
-                            dinoSpan.innerHTML = piece.king ? '👑🦕' : '🦕';
+                            dinoSpan.innerHTML = piece.king ? '🧩👑🦕' : '🧩🦕';
                         }
                         square.appendChild(dinoSpan);
                     }
@@ -311,7 +311,7 @@
             for (let i = 0; i < comidosGreen; i++) {
                 const dinoChorando = document.createElement('span');
                 dinoChorando.classList.add('dino-sad', 'dino-green-team');
-                dinoChorando.innerHTML = '🦖💧';
+                dinoChorando.innerHTML = '🧩🦖💧';
                 casinhaGreenElement.appendChild(dinoChorando);
             }
 
@@ -319,16 +319,16 @@
             for (let i = 0; i < comidosBlue; i++) {
                 const dinoChorando = document.createElement('span');
                 dinoChorando.classList.add('dino-sad', 'dino-blue-team');
-                dinoChorando.innerHTML = '🦕💧';
+                dinoChorando.innerHTML = '🧩🦕💧';
                 casinhaBlueElement.appendChild(dinoChorando);
             }
         }
 
         function atualizarInterface() {
             if (turno === 'green') {
-                statusElement.innerHTML = "Vez do Time: 🦖 T-Rex Verde";
+                statusElement.innerHTML = "Vez do Time: 🧩🦖 T-Rex Verde Suave";
             } else {
-                statusElement.innerHTML = "Vez do Time: 🦕 T-Rex Azul";
+                statusElement.innerHTML = "Vez do Time: 🧩🦕 T-Rex Azul Suave";
             }
             desenharTabuleiro();
         }
