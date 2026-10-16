@@ -15,6 +15,7 @@
             min-height: 100vh;
             margin: 0;
             color: #37474f;
+            position: relative;
         }
 
         h1 {
@@ -190,6 +191,61 @@
         .btn-restart:active {
             transform: translateY(1px);
         }
+
+        /* Ecrã de Vitória Gigante */
+        #modal-vitoria {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f1f8e9);
+            padding: 40px 60px;
+            border-radius: 30px;
+            border: 6px solid #81c784;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            max-width: 500px;
+        }
+
+        .modal-content h2 {
+            font-size: 2.2rem;
+            color: #1b5e20;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .rei-gigante {
+            font-size: 110px;
+            animation: bounceKing 1.2s infinite ease-in-out;
+            margin: 10px 0;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3));
+        }
+
+        @keyframes bounceKing {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-12px) scale(1.08); }
+        }
     </style>
 </head>
 <body>
@@ -227,6 +283,15 @@
 
     <button class="btn-restart" onclick="reiniciarJogo()">Reiniciar Jogo</button>
 
+    <!-- Janela de Vitória Gigante -->
+    <div id="modal-vitoria">
+        <div class="modal-content">
+            <h2 id="texto-vencedor">🏆 CAMPEÃO! 🏆</h2>
+            <div id="icone-rei-gigante" class="rei-gigante">👑🦖</div>
+            <button class="btn-restart" onclick="reiniciarJogo()">Jogar Novamente</button>
+        </div>
+    </div>
+
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -262,7 +327,6 @@
                 osc.start(agora);
                 osc.stop(agora + 0.3);
             } else if (tipo === 'vitoria') {
-                // Melodia Triunfante de Campeão (Fanfarra)
                 const notas = [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50];
                 const tempos = [0, 0.2, 0.4, 0.6, 0.9, 1.1];
                 const duracoes = [0.18, 0.18, 0.18, 0.25, 0.18, 0.5];
@@ -286,6 +350,9 @@
         const statusElement = document.getElementById('status');
         const casinhaGreenElement = document.getElementById('casinha-green');
         const casinhaBlueElement = document.getElementById('casinha-blue');
+        const modalVitoria = document.getElementById('modal-vitoria');
+        const textoVencedor = document.getElementById('texto-vencedor');
+        const iconeReiGigante = document.getElementById('icone-rei-gigante');
 
         let board = [];
         let turno = 'green';
@@ -319,6 +386,7 @@
             comidosGreen = 0;
             comidosBlue = 0;
             jogoTerminado = false;
+            modalVitoria.style.display = 'none';
             atualizarInterface();
         }
 
@@ -380,13 +448,17 @@
         function verificarFimDeJogo() {
             if (comidosGreen === 12) {
                 jogoTerminado = true;
-                statusElement.innerHTML = "🏆 CAMPEÃO: 👑🦕 T-Rex Azul Suave! 🏆";
+                textoVencedor.innerHTML = "🏆 T-Rex Azul Suave é o Grande Rei Campeão! 🏆";
+                iconeReiGigante.innerHTML = "👑🦕";
+                modalVitoria.style.display = 'flex';
                 tocarSom('vitoria');
                 return true;
             }
             if (comidosBlue === 12) {
                 jogoTerminado = true;
-                statusElement.innerHTML = "🏆 CAMPEÃO: 👑🦖 T-Rex Verde Suave! 🏆";
+                textoVencedor.innerHTML = "🏆 T-Rex Verde Suave é o Grande Rei Campeão! 🏆";
+                iconeReiGigante.innerHTML = "👑🦖";
+                modalVitoria.style.display = 'flex';
                 tocarSom('vitoria');
                 return true;
             }
