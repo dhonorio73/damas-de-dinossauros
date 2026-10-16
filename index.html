@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Damas de Dinossauros 3D - TEA Friendly</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e2f0d9, #c8e6c9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #2d3748;
+        }
+
+        h1 {
+            color: #1b5e20;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .status {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding: 8px 16px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 2px solid #a5d6a7;
+        }
+
+        .main-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .casinha {
+            width: 120px;
+            height: 520px;
+            background: linear-gradient(145deg, #ffffff, #f1f8e9);
+            border: 3px solid #81c784;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12), inset 0 2px 4px rgba(255,255,255,0.8);
+        }
+
+        .casinha h3 {
+            font-size: 0.95rem;
+            margin: 0 0 10px 0;
+            text-align: center;
+            color: #2e7d32;
+        }
+
+        .casinha-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            align-content: flex-start;
+            width: 100%;
+            overflow-y: auto;
+            max-height: 450px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, 65px);
+            grid-template-rows: repeat(8, 65px);
+            border: 6px solid #2e7d32;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25), inset 0 0 10px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .square {
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .light {
+            background-color: #f1f8e9 !important;
+        }
+
+        .dark {
+            background-color: #4db6ac !important;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.15);
+        }
+
+        .square.selected {
+            background-color: #ffee58 !important;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .square.highlight {
+            background-color: #81c784 !important;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        @keyframes dance {
+            0% { transform: rotate(0deg) scale(1) translateY(0); }
+            25% { transform: rotate(-6deg) scale(1.08) translateY(-4px); }
+            50% { transform: rotate(0deg) scale(1) translateY(0); }
+            75% { transform: rotate(6deg) scale(1.08) translateY(-4px); }
+            100% { transform: rotate(0deg) scale(1) translateY(0); }
+        }
+
+        .dino {
+            animation: dance 1.8s infinite ease-in-out;
+            transform-origin: bottom center;
+            display: inline-block;
+            user-select: none;
+            filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.35));
+        }
+
+        .dino-sad {
+            font-size: 34px;
+            display: inline-block;
+            animation: none;
+            user-select: none;
+            filter: drop-shadow(1px 3px 2px rgba(0, 0, 0, 0.3));
+        }
+
+        .dino-green {
+            filter: hue-rotate(0deg) saturate(2) drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.35));
+        }
+
+        .dino-blue {
+            filter: hue-rotate(150deg) saturate(2.2) drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.35));
+        }
+
+        .btn-restart {
+            margin-top: 20px;
+            background: linear-gradient(145deg, #43a047, #2e7d32);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        }
+
+        .btn-restart:hover {
+            background: linear-gradient(145deg, #2e7d32, #1b5e20);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.25);
+        }
+
+        .btn-restart:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+
+    <h1><span>🦖</span> Damas de Dinossauros 3D <span>🦕</span></h1>
+    <div id="status" class="status">Vez do Time: 🦖 T-Rex Verde</div>
+
+    <div class="main-container">
+        <div class="casinha">
+            <h3>🦕 Casinha Azul</h3>
+            <div id="casinha-blue" class="casinha-content"></div>
+        </div>
+
+        <div id="board" class="board"></div>
+
+        <div class="casinha">
+            <h3>🦖 Casinha Verde</h3>
+            <div id="casinha-green" class="casinha-content"></div>
+        </div>
+    </div>
+
+    <button class="btn-restart" onclick="reiniciarJogo()">Reiniciar Jogo</button>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function tocarSom(tipo) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const agora = audioCtx.currentTime;
+
+            if (tipo === 'mover') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, agora);
+                osc.frequency.exponentialRampToValueAtTime(587.33, agora + 0.1);
+                gain.gain.setValueAtTime(0.15, agora);
+                gain.gain.exponentialRampToValueAtTime(0.01, agora + 0.15);
+                osc.start(agora);
+                osc.stop(agora + 0.15);
+            } else if (tipo === 'comer') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(330, agora);
+                osc.frequency.setValueAtTime(440, agora + 0.08);
+                osc.frequency.setValueAtTime(659.25, agora + 0.16);
+                gain.gain.setValueAtTime(0.2, agora);
+                gain.gain.exponentialRampToValueAtTime(0.01, agora + 0.3);
+                osc.start(agora);
+                osc.stop(agora + 0.3);
+            }
+        }
+
+        const boardElement = document.getElementById('board');
+        const statusElement = document.getElementById('status');
+        const casinhaGreenElement = document.getElementById('casinha-green');
+        const casinhaBlueElement = document.getElementById('casinha-blue');
+
+        let board = [];
+        let turno = 'green';
+        let selectedPiece = null;
+        let movimentosValidos = [];
+        let comidosGreen = 0;
+        let comidosBlue = 0;
+
+        function inicializarTabuleiro() {
+            board = Array(8).fill(null).map(() => Array(8).fill(null));
+
+            for (let r = 5; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if ((r + c) % 2 === 1) {
+                        board[r][c] = { player: 'green', king: false };
+                    }
+                }
+            }
+
+            for (let r = 0; r < 3; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if ((r + c) % 2 === 1) {
+                        board[r][c] = { player: 'blue', king: false };
+                    }
+                }
+            }
+            turno = 'green';
+            selectedPiece = null;
+            movimentosValidos = [];
+            comidosGreen = 0;
+            comidosBlue = 0;
