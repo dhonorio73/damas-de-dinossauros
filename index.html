@@ -234,14 +234,13 @@
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
             const agora = audioCtx.currentTime;
 
             if (tipo === 'mover') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(440, agora);
                 osc.frequency.exponentialRampToValueAtTime(587.33, agora + 0.1);
@@ -250,6 +249,10 @@
                 osc.start(agora);
                 osc.stop(agora + 0.15);
             } else if (tipo === 'comer') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(330, agora);
                 osc.frequency.setValueAtTime(440, agora + 0.08);
@@ -258,6 +261,24 @@
                 gain.gain.exponentialRampToValueAtTime(0.01, agora + 0.3);
                 osc.start(agora);
                 osc.stop(agora + 0.3);
+            } else if (tipo === 'vitoria') {
+                // Melodia Triunfante de Campeão (Fanfarra)
+                const notas = [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50];
+                const tempos = [0, 0.2, 0.4, 0.6, 0.9, 1.1];
+                const duracoes = [0.18, 0.18, 0.18, 0.25, 0.18, 0.5];
+
+                notas.forEach((freq, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, agora + tempos[i]);
+                    gain.gain.setValueAtTime(0.2, agora + tempos[i]);
+                    gain.gain.exponentialRampToValueAtTime(0.01, agora + tempos[i] + duracoes[i]);
+                    osc.start(agora + tempos[i]);
+                    osc.stop(agora + tempos[i] + duracoes[i]);
+                });
             }
         }
 
@@ -272,6 +293,7 @@
         let movimentosValidos = [];
         let comidosGreen = 0;
         let comidosBlue = 0;
+        let jogoTerminado = false;
 
         function inicializarTabuleiro() {
             board = Array(8).fill(null).map(() => Array(8).fill(null));
@@ -296,6 +318,7 @@
             movimentosValidos = [];
             comidosGreen = 0;
             comidosBlue = 0;
+            jogoTerminado = false;
             atualizarInterface();
         }
 
@@ -354,16 +377,35 @@
             }
         }
 
+        function verificarFimDeJogo() {
+            if (comidosGreen === 12) {
+                jogoTerminado = true;
+                statusElement.innerHTML = "🏆 CAMPEÃO: 👑🦕 T-Rex Azul Suave! 🏆";
+                tocarSom('vitoria');
+                return true;
+            }
+            if (comidosBlue === 12) {
+                jogoTerminado = true;
+                statusElement.innerHTML = "🏆 CAMPEÃO: 👑🦖 T-Rex Verde Suave! 🏆";
+                tocarSom('vitoria');
+                return true;
+            }
+            return false;
+        }
+
         function atualizarInterface() {
-            if (turno === 'green') {
-                statusElement.innerHTML = "Vez do Time: 🦖 T-Rex Verde Suave";
-            } else {
-                statusElement.innerHTML = "Vez do Time: 🦕 T-Rex Azul Suave";
+            if (!jogoTerminado) {
+                if (turno === 'green') {
+                    statusElement.innerHTML = "Vez do Time: 🦖 T-Rex Verde Suave";
+                } else {
+                    statusElement.innerHTML = "Vez do Time: 🦕 T-Rex Azul Suave";
+                }
             }
             desenharTabuleiro();
         }
 
         function clicarCasa(r, c) {
+            if (jogoTerminado) return;
             const piece = board[r][c];
 
             if (piece && piece.player === turno) {
@@ -435,11 +477,12 @@
             if (piece.player === 'green' && toR === 0) piece.king = true;
             if (piece.player === 'blue' && toR === 7) piece.king = true;
 
-            turno = turno === 'green' ? 'blue' : 'green';
-            selectedPiece = null;
-            movimentosValidos = [];
-
-            atualizarInterface();
+            if (!verificarFimDeJogo()) {
+                turno = turno === 'green' ? 'blue' : 'green';
+                selectedPiece = null;
+                movimentosValidos = [];
+                atualizarInterface();
+            }
         }
 
         function reiniciarJogo() {
