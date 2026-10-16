@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🦖 Damas de Dinossauros 3D 🦕</title>
+    <title>🧩 Damas de Dinossauros 3D 🦕</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
+            background: linear-gradient(135deg, #e3f2fd, #fff9c4);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -22,10 +22,17 @@
             margin-bottom: 5px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             font-size: 2.2rem;
+            text-align: center;
         }
+
+        /* Cores inspiradas na fita de conscientização do TEA (Peças de Quebra-Cabeça) */
+        .puzzle-red { color: #e53935; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .puzzle-yellow { color: #fbc02d; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .puzzle-blue { color: #1e88e5; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .puzzle-green { color: #43a047; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
 
         .status {
             font-size: 1.25rem;
@@ -97,7 +104,6 @@
             position: relative;
         }
 
-        /* Cores pastel suaves inspiradas no tema de quebra-cabeça TEA */
         .light {
             background-color: #f5f5f5 !important;
         }
@@ -135,7 +141,6 @@
             transform: scale(1.15);
         }
 
-        /* Cores pastéis suaves para os dinossauros e blocos de quebra-cabeça TEA */
         .dino-green-team {
             filter: hue-rotate(60deg) saturate(1.4) brightness(1.1);
         }
@@ -178,7 +183,13 @@
 </head>
 <body>
 
-    <h1><span>🦖</span> Damas de Dinossauros 3D <span>🦕</span></h1>
+    <h1>
+        <span class="puzzle-red">🧩</span>
+        <span class="puzzle-yellow">🦖</span>
+        <span class="puzzle-blue">Damas de Dinossauros 3D</span>
+        <span class="puzzle-green">🦕</span>
+        <span class="puzzle-red">🧩</span>
+    </h1>
     <div id="status" class="status">Vez do Time: 🧩🦖 T-Rex Verde Suave</div>
 
     <div class="main-container">
