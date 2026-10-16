@@ -7,60 +7,63 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e2f0d9, #c8e6c9);
+            background: linear-gradient(135deg, #1b4332, #2d6a4f);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            color: #2d3748;
+            color: #f1f8e9;
         }
 
         h1 {
-            color: #1b5e20;
+            color: #95d5b2;
             margin-bottom: 5px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+            gap: 12px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            font-size: 2.2rem;
         }
 
         .status {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: bold;
-            margin-bottom: 15px;
-            padding: 8px 16px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border: 2px solid #a5d6a7;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            border: 2px solid rgba(149, 213, 178, 0.4);
+            color: #d8f3dc;
         }
 
         .main-container {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
         }
 
         .casinha {
-            width: 120px;
-            height: 520px;
-            background: linear-gradient(145deg, #ffffff, #f1f8e9);
-            border: 3px solid #81c784;
-            border-radius: 16px;
+            width: 130px;
+            height: 540px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 4px solid #52b788;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.12), inset 0 2px 4px rgba(255,255,255,0.8);
+            padding: 15px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
         }
 
         .casinha h3 {
-            font-size: 0.95rem;
-            margin: 0 0 10px 0;
+            font-size: 1rem;
+            margin: 0 0 12px 0;
             text-align: center;
-            color: #2e7d32;
+            color: #1b4332;
         }
 
         .casinha-content {
@@ -71,16 +74,16 @@
             align-content: flex-start;
             width: 100%;
             overflow-y: auto;
-            max-height: 450px;
+            max-height: 460px;
         }
 
         .board {
             display: grid;
             grid-template-columns: repeat(8, 65px);
             grid-template-rows: repeat(8, 65px);
-            border: 6px solid #2e7d32;
-            border-radius: 12px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25), inset 0 0 10px rgba(0,0,0,0.2);
+            border: 8px solid #081c15;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0,0,0,0.4);
             overflow: hidden;
         }
 
@@ -90,80 +93,74 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
             cursor: pointer;
             position: relative;
         }
 
-        .square.light {
-            background-color: #f1f8e9;
+        .light {
+            background-color: #d8f3dc !important;
         }
 
-        .square.dark {
-            background-color: #4db6ac;
-            box-shadow: inset 0 4px 6px rgba(0,0,0,0.15);
+        .dark {
+            background-color: #2d6a4f !important;
+            box-shadow: inset 0 6px 10px rgba(0,0,0,0.3);
         }
 
         .square.selected {
-            background-color: #ffee58 !important;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+            background-color: #ffd166 !important;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
         }
 
         .square.highlight {
-            background-color: #81c784 !important;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+            background-color: #52b788 !important;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
         }
 
-        @keyframes dance {
-            0% { transform: rotate(0deg) scale(1) translateY(0); }
-            25% { transform: rotate(-6deg) scale(1.08) translateY(-4px); }
-            50% { transform: rotate(0deg) scale(1) translateY(0); }
-            75% { transform: rotate(6deg) scale(1.08) translateY(-4px); }
-            100% { transform: rotate(0deg) scale(1) translateY(0); }
+        @keyframes float3d {
+            0% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); filter: drop-shadow(0 8px 6px rgba(0,0,0,0.4)); }
+            50% { transform: translateY(-5px) rotateX(5deg) rotateY(3deg); filter: drop-shadow(0 14px 8px rgba(0,0,0,0.3)); }
+            100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); filter: drop-shadow(0 8px 6px rgba(0,0,0,0.4)); }
         }
 
-        .dino {
-            animation: dance 1.8s infinite ease-in-out;
-            transform-origin: bottom center;
+        .dino-3d {
+            font-size: 42px;
+            animation: float3d 2.5s infinite ease-in-out;
             display: inline-block;
             user-select: none;
-            filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.35));
+            transition: transform 0.2s;
+        }
+
+        .dino-3d:hover {
+            transform: scale(1.15);
         }
 
         .dino-sad {
             font-size: 34px;
-            display: inline-block;
             animation: none;
             user-select: none;
-            filter: drop-shadow(1px 3px 2px rgba(0, 0, 0, 0.3));
-        }
-
-        .dino-green {
-            filter: hue-rotate(0deg) saturate(2) drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.35));
-        }
-
-        .dino-blue {
-            filter: hue-rotate(150deg) saturate(2.2) drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.35));
+            filter: grayscale(0.3) drop-shadow(0 3px 3px rgba(0,0,0,0.3));
+            opacity: 0.85;
         }
 
         .btn-restart {
-            margin-top: 20px;
-            background: linear-gradient(145deg, #43a047, #2e7d32);
+            margin-top: 25px;
+            background: linear-gradient(145deg, #52b788, #2d6a4f);
             color: white;
             border: none;
-            padding: 12px 24px;
-            font-size: 1.1rem;
+            padding: 14px 28px;
+            font-size: 1.15rem;
             font-weight: bold;
-            border-radius: 10px;
+            border-radius: 14px;
             cursor: pointer;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             transition: all 0.2s;
+            border: 2px solid #b7e4c7;
         }
 
         .btn-restart:hover {
-            background: linear-gradient(145deg, #2e7d32, #1b5e20);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.25);
+            background: linear-gradient(145deg, #40916c, #1b4332);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
         }
 
         .btn-restart:active {
@@ -277,13 +274,11 @@
                     const piece = board[r][c];
                     if (piece) {
                         const dinoSpan = document.createElement('span');
-                        dinoSpan.classList.add('dino');
+                        dinoSpan.classList.add('dino-3d');
                         
                         if (piece.player === 'green') {
-                            dinoSpan.classList.add('dino-green');
-                            dinoSpan.innerHTML = piece.king ? '👑🦖' : '🦖';
+                            dinoSpan.innerHTML = piece.king ? '👑🐉' : '🦖';
                         } else {
-                            dinoSpan.classList.add('dino-blue');
                             dinoSpan.innerHTML = piece.king ? '👑🦕' : '🦕';
                         }
                         square.appendChild(dinoSpan);
@@ -305,7 +300,7 @@
             casinhaGreenElement.innerHTML = '';
             for (let i = 0; i < comidosGreen; i++) {
                 const dinoChorando = document.createElement('span');
-                dinoChorando.classList.add('dino-sad', 'dino-green');
+                dinoChorando.classList.add('dino-sad');
                 dinoChorando.innerHTML = '🦖💧';
                 casinhaGreenElement.appendChild(dinoChorando);
             }
@@ -313,7 +308,7 @@
             casinhaBlueElement.innerHTML = '';
             for (let i = 0; i < comidosBlue; i++) {
                 const dinoChorando = document.createElement('span');
-                dinoChorando.classList.add('dino-sad', 'dino-blue');
+                dinoChorando.classList.add('dino-sad');
                 dinoChorando.innerHTML = '🦕💧';
                 casinhaBlueElement.appendChild(dinoChorando);
             }
