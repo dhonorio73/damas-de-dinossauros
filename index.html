@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧩 Damas de Dinossauros 3D 🦕</title>
+    <title>Damas de Dinossauros 3D - TEA</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,16 +22,29 @@
             margin-bottom: 5px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             font-size: 2.2rem;
             text-align: center;
         }
 
-        .puzzle-red { color: #e53935; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
-        .puzzle-yellow { color: #fbc02d; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
-        .puzzle-blue { color: #1e88e5; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
-        .puzzle-green { color: #43a047; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        /* Bloco de 4 peças de quebra-cabeça com as cores TEA */
+        .puzzle-grid {
+            display: inline-grid;
+            grid-template-columns: repeat(2, 14px);
+            grid-template-rows: repeat(2, 14px);
+            gap: 2px;
+            vertical-align: middle;
+            background: #ffffff;
+            padding: 2px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .p-blue { background-color: #1e88e5; border-radius: 2px; }
+        .p-yellow { background-color: #fbc02d; border-radius: 2px; }
+        .p-red { background-color: #e53935; border-radius: 2px; }
+        .p-green { background-color: #43a047; border-radius: 2px; }
 
         .status {
             font-size: 1.25rem;
@@ -183,11 +196,20 @@
 <body>
 
     <h1>
-        <span class="puzzle-red">🧩</span>
-        <span class="puzzle-yellow">🦖</span>
-        <span class="puzzle-blue">Damas de Dinossauros 3D</span>
-        <span class="puzzle-green">🦕</span>
-        <span class="puzzle-red">🧩</span>
+        <!-- Bloco de 4 peças de quebra-cabeça TEA -->
+        <span class="puzzle-grid">
+            <span class="p-blue"></span>
+            <span class="p-yellow"></span>
+            <span class="p-red"></span>
+            <span class="p-green"></span>
+        </span>
+        <span>🦖</span> Damas de Dinossauros 3D <span>🦕</span>
+        <span class="puzzle-grid">
+            <span class="p-red"></span>
+            <span class="p-green"></span>
+            <span class="p-blue"></span>
+            <span class="p-yellow"></span>
+        </span>
     </h1>
     <div id="status" class="status">Vez do Time: 🦖 T-Rex Verde Suave</div>
 
@@ -428,6 +450,3 @@
         }
 
         inicializarTabuleiro();
-    </script>
-</body>
-</html>
