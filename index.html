@@ -134,12 +134,20 @@
             transform: scale(1.15);
         }
 
+        /* Cores distintas otimizadas para foco e reconhecimento visual TEA */
+        .dino-green-team {
+            filter: drop-shadow(0 4px 5px rgba(0, 100, 0, 0.6)) brightness(1.1);
+        }
+
+        .dino-blue-team {
+            filter: hue-rotate(190deg) saturate(2.5) drop-shadow(0 4px 5px rgba(0, 0, 150, 0.6)) brightness(1.2);
+        }
+
         .dino-sad {
             font-size: 34px;
             animation: none;
             user-select: none;
-            filter: grayscale(0.3) drop-shadow(0 3px 3px rgba(0,0,0,0.3));
-            opacity: 0.85;
+            filter: grayscale(0.4) opacity(0.8);
         }
 
         .btn-restart {
@@ -277,8 +285,10 @@
                         dinoSpan.classList.add('dino-3d');
                         
                         if (piece.player === 'green') {
-                            dinoSpan.innerHTML = piece.king ? '👑🐉' : '🦖';
+                            dinoSpan.classList.add('dino-green-team');
+                            dinoSpan.innerHTML = piece.king ? '👑🦖' : '🦖';
                         } else {
+                            dinoSpan.classList.add('dino-blue-team');
                             dinoSpan.innerHTML = piece.king ? '👑🦕' : '🦕';
                         }
                         square.appendChild(dinoSpan);
@@ -300,7 +310,7 @@
             casinhaGreenElement.innerHTML = '';
             for (let i = 0; i < comidosGreen; i++) {
                 const dinoChorando = document.createElement('span');
-                dinoChorando.classList.add('dino-sad');
+                dinoChorando.classList.add('dino-sad', 'dino-green-team');
                 dinoChorando.innerHTML = '🦖💧';
                 casinhaGreenElement.appendChild(dinoChorando);
             }
@@ -308,7 +318,7 @@
             casinhaBlueElement.innerHTML = '';
             for (let i = 0; i < comidosBlue; i++) {
                 const dinoChorando = document.createElement('span');
-                dinoChorando.classList.add('dino-sad');
+                dinoChorando.classList.add('dino-sad', 'dino-blue-team');
                 dinoChorando.innerHTML = '🦕💧';
                 casinhaBlueElement.appendChild(dinoChorando);
             }
