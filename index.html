@@ -319,3 +319,115 @@
 
             casinhaGreenElement.innerHTML = '';
             for (let i = 0; i < comidosGreen; i++) {
+                const dinoChorando = document.createElement('span');
+                dinoChorando.classList.add('dino-sad', 'dino-green-team');
+                dinoChorando.innerHTML = '🦖💧';
+                casinhaGreenElement.appendChild(dinoChorando);
+            }
+
+            casinhaBlueElement.innerHTML = '';
+            for (let i = 0; i < comidosBlue; i++) {
+                const dinoChorando = document.createElement('span');
+                dinoChorando.classList.add('dino-sad', 'dino-blue-team');
+                dinoChorando.innerHTML = '🦕💧';
+                casinhaBlueElement.appendChild(dinoChorando);
+            }
+        }
+
+        function atualizarInterface() {
+            if (turno === 'green') {
+                statusElement.innerHTML = "Vez do Time: 🦖 T-Rex Verde Suave";
+            } else {
+                statusElement.innerHTML = "Vez do Time: 🦕 T-Rex Azul Suave";
+            }
+            desenharTabuleiro();
+        }
+
+        function clicarCasa(r, c) {
+            const piece = board[r][c];
+
+            if (piece && piece.player === turno) {
+                selectedPiece = { row: r, col: c };
+                movimentosValidos = calcularMovimentos(r, c);
+                atualizarInterface();
+                return;
+            }
+
+            if (selectedPiece) {
+                const movimento = movimentosValidos.find(m => m.row === r && m.col === c);
+                if (movimento) {
+                    executarMovimento(selectedPiece.row, selectedPiece.col, r, c, movimento.captured);
+                } else {
+                    selectedPiece = null;
+                    movimentosValidos = [];
+                    atualizarInterface();
+                }
+            }
+        }
+
+        function calcularMovimentos(r, c) {
+            const piece = board[r][c];
+            const moves = [];
+            const direcoes = piece.king ? [-1, 1] : (piece.player === 'green' ? [-1] : [1]);
+
+            direcoes.forEach(dr => {
+                [-1, 1].forEach(dc => {
+                    const nextR = r + dr;
+                    const nextC = c + dc;
+                    const jumpR = r + dr * 2;
+                    const jumpC = c + dc * 2;
+
+                    if (nextR >= 0 && nextR < 8 && nextC >= 0 && nextC < 8) {
+                        const target = board[nextR][nextC];
+                        if (!target) {
+                            moves.push({ row: nextR, col: nextC, captured: null });
+                        } else if (target.player !== piece.player) {
+                            if (jumpR >= 0 && jumpR < 8 && jumpC >= 0 && jumpC < 8 && !board[jumpR][jumpC]) {
+                                moves.push({ row: jumpR, col: jumpC, captured: { row: nextR, col: nextC } });
+                            }
+                        }
+                    }
+                });
+            });
+
+            return moves;
+        }
+
+        function executarMovimento(fromR, fromC, toR, toC, captured) {
+            const piece = board[fromR][fromC];
+            board[toR][toC] = piece;
+            board[fromR][fromC] = null;
+
+            if (captured) {
+                const pecaComida = board[captured.row][captured.col];
+                if (pecaComida.player === 'green') {
+                    comidosGreen++;
+                } else {
+                    comidosBlue++;
+                }
+
+                board[captured.row][captured.col] = null;
+                tocarSom('comer');
+            } else {
+                tocarSom('mover');
+            }
+
+            if (piece.player === 'green' && toR === 0) piece.king = true;
+            if (piece.player === 'blue' && toR === 7) piece.king = true;
+
+            turno = turno === 'green' ? 'blue' : 'green';
+            selectedPiece = null;
+            movimentosValidos = [];
+
+            atualizarInterface();
+        }
+
+        function reiniciarJogo() {
+            tocarSom('mover');
+            inicializarTabuleiro();
+        }
+
+        inicializarTabuleiro();
+    </script>
+</body>
+</html>
