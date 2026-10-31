@@ -4,7 +4,9 @@ Jogo de damas para duas pessoas, com tema de dinossauros e uma interface pensada
 
 ## Jogar
 
-Abra [`index.html`](./index.html) em um navegador. Para publicar uma versão jogável, ative o GitHub Pages nas configurações do repositório, selecionando a branch `main` e a pasta `/ (root)`.
+[Jogue online pelo GitHub Pages](https://dhonorio73.github.io/damas-de-dinossauros/).
+
+Para executar localmente, abra [`index.html`](./index.html) em um navegador.
 
 ## Recursos
 
