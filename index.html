@@ -3,85 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧩 Damas de Dinossauros 3D 🦕</title>
+    <title>Damas de Dinossauros 3D - jogo acessível</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e3f2fd, #fff9c4);
+            background: linear-gradient(135deg, #e2f0d9, #c8e6c9);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
             margin: 0;
-            color: #37474f;
-            position: relative;
+            padding: 20px 12px;
+            box-sizing: border-box;
+            color: #2d3748;
         }
 
         h1 {
-            color: #2c3e50;
-            margin-bottom: 5px;
+            color: #1b5e20;
+            margin: 0 0 8px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            font-size: 2.2rem;
+            gap: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
             text-align: center;
+            font-size: clamp(1.35rem, 4vw, 2rem);
         }
-
-        .puzzle-grid {
-            display: inline-grid;
-            grid-template-columns: repeat(2, 14px);
-            grid-template-rows: repeat(2, 14px);
-            gap: 2px;
-            vertical-align: middle;
-            background: #ffffff;
-            padding: 2px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .p-blue { background-color: #1e88e5; border-radius: 2px; }
-        .p-yellow { background-color: #fbc02d; border-radius: 2px; }
-        .p-red { background-color: #e53935; border-radius: 2px; }
-        .p-green { background-color: #43a047; border-radius: 2px; }
 
         .status {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            margin-bottom: 20px;
-            padding: 10px 22px;
+            margin-bottom: 15px;
+            padding: 8px 16px;
             background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            border: 2px solid #b0bec5;
-            color: #455a64;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 2px solid #a5d6a7;
+            text-align: center;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .main-container {
             display: flex;
             align-items: center;
-            gap: 25px;
+            gap: 20px;
+            width: min(100%, 900px);
+            justify-content: center;
         }
 
+        /* Estilo 3D das Casinhas */
         .casinha {
-            width: 130px;
-            height: 540px;
-            background: #ffffff;
-            border: 4px solid #cfd8dc;
-            border-radius: 20px;
+            width: 120px;
+            min-width: 0;
+            height: 520px;
+            background: linear-gradient(145deg, #ffffff, #f1f8e9);
+            border: 3px solid #81c784;
+            border-radius: 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            padding: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12), inset 0 2px 4px rgba(255,255,255,0.8);
         }
 
         .casinha h3 {
             font-size: 0.95rem;
-            margin: 0 0 12px 0;
+            margin: 0 0 10px 0;
             text-align: center;
-            color: #546e7a;
+            color: #2e7d32;
         }
 
         .casinha-content {
@@ -92,257 +81,313 @@
             align-content: flex-start;
             width: 100%;
             overflow-y: auto;
-            max-height: 460px;
+            max-height: 450px;
+            text-align: center;
+            font-weight: 600;
         }
 
+        /* Tabuleiro com visual 3D e relevo */
         .board {
             display: grid;
-            grid-template-columns: repeat(8, 65px);
-            grid-template-rows: repeat(8, 65px);
-            border: 8px solid #37474f;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(0,0,0,0.1);
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            grid-template-rows: repeat(8, minmax(0, 1fr));
+            width: min(520px, 62vw);
+            aspect-ratio: 1;
+            flex: 0 1 520px;
+            border: 6px solid #2e7d32;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25), inset 0 0 10px rgba(0,0,0,0.2);
             overflow: hidden;
-            background-color: #fafafa;
+            box-sizing: border-box;
         }
 
         .square {
-            width: 65px;
-            height: 65px;
+            min-width: 0;
+            min-height: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: clamp(1.3rem, 4vw, 2.5rem);
             cursor: pointer;
             position: relative;
+            border: 0;
+            padding: 0;
+            font-family: inherit;
         }
 
+        /* Correção: Fundo visível para as casas claras */
         .light {
-            background-color: #f5f5f5 !important;
+            background-color: #f1f8e9 !important;
         }
 
+        /* Correção: Fundo visível para as casas escuras */
         .dark {
-            background-color: #cfd8dc !important;
-            box-shadow: inset 0 4px 6px rgba(0,0,0,0.08);
+            background-color: #4db6ac !important;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.15);
         }
 
         .square.selected {
-            background-color: #fff9c4 !important;
-            box-shadow: inset 0 0 12px rgba(0,0,0,0.15);
+            background-color: #ffee58 !important;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
         }
 
         .square.highlight {
-            background-color: #c8e6c9 !important;
-            box-shadow: inset 0 0 12px rgba(0,0,0,0.15);
+            background-color: #81c784 !important;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
         }
 
-        @keyframes float3d {
-            0% { transform: translateY(0px) rotate(0deg); filter: drop-shadow(0 6px 4px rgba(0,0,0,0.2)); }
-            50% { transform: translateY(-4px) rotate(2deg); filter: drop-shadow(0 10px 6px rgba(0,0,0,0.15)); }
-            100% { transform: translateY(0px) rotate(0deg); filter: drop-shadow(0 6px 4px rgba(0,0,0,0.2)); }
+        .square.highlight::after {
+            content: "●";
+            position: absolute;
+            color: #1b5e20;
+            font-size: clamp(0.9rem, 3vw, 1.4rem);
+            line-height: 1;
         }
 
-        .dino-3d {
-            font-size: 38px;
-            animation: float3d 3s infinite ease-in-out;
+        .square:focus-visible,
+        button:focus-visible {
+            outline: 4px solid #ff8f00;
+            outline-offset: -4px;
+            z-index: 1;
+        }
+
+        .square:disabled {
+            cursor: default;
+        }
+
+        /* Efeito 3D nas Peças (Sombra projetada e relevo) */
+        @keyframes dance {
+            0% { transform: rotate(0deg) scale(1) translateY(0); }
+            25% { transform: rotate(-6deg) scale(1.08) translateY(-4px); }
+            50% { transform: rotate(0deg) scale(1) translateY(0); }
+            75% { transform: rotate(6deg) scale(1.08) translateY(-4px); }
+            100% { transform: rotate(0deg) scale(1) translateY(0); }
+        }
+
+        .dino {
+            animation: none;
+            transform-origin: bottom center;
             display: inline-block;
             user-select: none;
-            transition: transform 0.2s;
+            filter: drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.35));
         }
 
-        .dino-3d:hover {
-            transform: scale(1.15);
+        .animacoes-ativas .dino {
+            animation: dance 1.8s infinite ease-in-out;
         }
 
-        .dino-green-team {
-            filter: hue-rotate(60deg) saturate(1.4) brightness(1.1);
+        .dino-green {
+            filter: hue-rotate(0deg) saturate(2) drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.35));
         }
 
-        .dino-blue-team {
-            filter: hue-rotate(200deg) saturate(1.5) brightness(1.15);
-        }
-
-        .dino-sad {
-            font-size: 30px;
-            animation: none;
-            user-select: none;
-            filter: grayscale(0.5) opacity(0.75);
+        .dino-blue {
+            filter: hue-rotate(150deg) saturate(2.2) drop-shadow(2px 6px 3px rgba(0, 0, 0, 0.35));
         }
 
         .btn-restart {
-            margin-top: 25px;
-            background: linear-gradient(145deg, #78909c, #455a64);
+            margin-top: 20px;
+            background: linear-gradient(145deg, #43a047, #2e7d32);
             color: white;
             border: none;
-            padding: 12px 26px;
+            padding: 12px 24px;
             font-size: 1.1rem;
             font-weight: bold;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
             transition: all 0.2s;
         }
 
         .btn-restart:hover {
-            background: linear-gradient(145deg, #607d8b, #37474f);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(145deg, #2e7d32, #1b5e20);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.25);
         }
 
-        .btn-restart:active {
-            transform: translateY(1px);
+        .instrucoes {
+            margin: 0 0 12px;
+            text-align: center;
         }
 
-        /* Ecrã de Vitória Gigante */
+        .opcoes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px 20px;
+            margin: 0 0 16px;
+            padding: 10px 14px;
+            border: 2px solid #a5d6a7;
+            border-radius: 12px;
+            background: #fff;
+        }
+
+        .opcoes label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .opcoes input {
+            width: 20px;
+            height: 20px;
+        }
+
         #modal-vitoria {
-            display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            flex-direction: column;
+            inset: 0;
+            z-index: 5;
+            display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            animation: fadeIn 0.5s ease-in-out;
+            padding: 20px;
+            background: rgba(15, 35, 20, 0.68);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        #modal-vitoria[hidden] {
+            display: none !important;
         }
 
         .modal-content {
-            background: linear-gradient(145deg, #ffffff, #f1f8e9);
-            padding: 40px 60px;
-            border-radius: 30px;
-            border: 6px solid #81c784;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            max-width: 500px;
+            width: min(440px, 100%);
+            padding: 28px;
+            border: 3px solid #81c784;
+            border-radius: 20px;
+            background: #fff;
+            text-align: center;
+            box-shadow: 0 18px 48px rgba(0, 0, 0, 0.3);
         }
 
-        .modal-content h2 {
-            font-size: 2.2rem;
-            color: #1b5e20;
-            margin: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        .modal-content h2 { color: #1b5e20; }
+        .rei-gigante { margin: 12px 0; font-size: clamp(3rem, 12vw, 5rem); }
+
+        @media (max-width: 760px) {
+            body { justify-content: flex-start; padding: 14px 10px 24px; }
+            .main-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .board {
+                order: 0;
+                width: min(520px, calc(100vw - 28px));
+                flex: none;
+                border-width: 4px;
+            }
+            .casinha {
+                width: min(520px, calc(100vw - 28px));
+                height: auto;
+                min-height: 76px;
+                padding: 8px 12px;
+                box-sizing: border-box;
+            }
+            .casinha:first-child { order: 1; }
+            .casinha:last-child { order: 2; }
+            .casinha-content {
+                max-height: 90px;
+                overflow-y: auto;
+            }
+            .status { font-size: 1rem; }
         }
 
-        .rei-gigante {
-            font-size: 110px;
-            animation: bounceKing 1.2s infinite ease-in-out;
-            margin: 10px 0;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3));
-        }
-
-        @keyframes bounceKing {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-12px) scale(1.08); }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <h1>
-        <span class="puzzle-grid">
-            <span class="p-blue"></span>
-            <span class="p-yellow"></span>
-            <span class="p-red"></span>
-            <span class="p-green"></span>
-        </span>
-        <span>🦖</span> Damas de Dinossauros 3D <span>🦕</span>
-        <span class="puzzle-grid">
-            <span class="p-red"></span>
-            <span class="p-green"></span>
-            <span class="p-blue"></span>
-            <span class="p-yellow"></span>
-        </span>
-    </h1>
-    <div id="status" class="status">Vez do Time: 🦖 T-Rex Verde Suave</div>
+    <h1><span>🦖</span> Damas de Dinossauros 3D <span>🦕</span></h1>
+    <p class="instrucoes">Jogue no seu tempo. Não há cronômetro. Selecione uma peça e depois uma casa destacada.</p>
+    <fieldset class="opcoes" aria-label="Opções de conforto">
+        <label><input id="sound-toggle" type="checkbox"> Ativar sons</label>
+        <label><input id="animation-toggle" type="checkbox"> Mover os dinossauros</label>
+    </fieldset>
+    <div id="status" class="status" role="status" aria-live="polite">Vez do time: 🦖 T-Rex Verde</div>
 
     <div class="main-container">
+        <!-- Casinha do Time Azul -->
         <div class="casinha">
-            <h3>🦕 Casinha Azul Suave</h3>
-            <div id="casinha-blue" class="casinha-content"></div>
+            <h3>🦕 Casinha Azul</h3>
+            <div id="casinha-blue" class="casinha-content" aria-label="Peças azuis capturadas"></div>
         </div>
 
-        <div id="board" class="board"></div>
+        <!-- Tabuleiro do Jogo -->
+        <div id="board" class="board" role="grid" aria-label="Tabuleiro de damas"></div>
 
+        <!-- Casinha do Time Verde -->
         <div class="casinha">
-            <h3>🦖 Casinha Verde Suave</h3>
-            <div id="casinha-green" class="casinha-content"></div>
+            <h3>🦖 Casinha Verde</h3>
+            <div id="casinha-green" class="casinha-content" aria-label="Peças verdes capturadas"></div>
         </div>
     </div>
 
-    <button class="btn-restart" onclick="reiniciarJogo()">Reiniciar Jogo</button>
+    <button id="restart-button" class="btn-restart" type="button">Reiniciar jogo</button>
 
-    <!-- Janela de Vitória Gigante -->
-    <div id="modal-vitoria">
+    <div id="modal-vitoria" role="dialog" aria-modal="true" aria-labelledby="texto-vencedor" hidden>
         <div class="modal-content">
-            <h2 id="texto-vencedor">🏆 CAMPEÃO! 🏆</h2>
-            <div id="icone-rei-gigante" class="rei-gigante">👑🦖</div>
-            <button class="btn-restart" onclick="reiniciarJogo()">Jogar Novamente</button>
+            <h2 id="texto-vencedor">Fim de jogo</h2>
+            <div id="icone-rei-gigante" class="rei-gigante" aria-hidden="true">🏆</div>
+            <button id="play-again-button" class="btn-restart" type="button">Jogar novamente</button>
         </div>
     </div>
 
     <script>
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let audioCtx = null;
+        const soundToggle = document.getElementById('sound-toggle');
+        const animationToggle = document.getElementById('animation-toggle');
 
         function tocarSom(tipo) {
+            if (!soundToggle.checked) return;
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContextClass) return;
+            audioCtx = audioCtx || new AudioContextClass();
             if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
+                audioCtx.resume().catch(error => console.error('Não foi possível iniciar o áudio.', error));
             }
             const agora = audioCtx.currentTime;
 
-            if (tipo === 'mover') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
+            if (tipo === 'vitoria') {
+                [523.25, 659.25, 783.99, 1046.5].forEach((frequencia, index) => {
+                    const inicio = agora + index * 0.18;
+                    const oscilador = audioCtx.createOscillator();
+                    const volume = audioCtx.createGain();
+                    oscilador.connect(volume);
+                    volume.connect(audioCtx.destination);
+                    oscilador.type = 'triangle';
+                    oscilador.frequency.setValueAtTime(frequencia, inicio);
+                    volume.gain.setValueAtTime(0.12, inicio);
+                    volume.gain.exponentialRampToValueAtTime(0.01, inicio + 0.24);
+                    oscilador.start(inicio);
+                    oscilador.stop(inicio + 0.24);
+                });
+                return;
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            if (tipo === 'mover' || tipo === 'promover') {
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(440, agora);
-                osc.frequency.exponentialRampToValueAtTime(587.33, agora + 0.1);
-                gain.gain.setValueAtTime(0.1, agora);
+                osc.frequency.setValueAtTime(tipo === 'promover' ? 660 : 440, agora);
+                osc.frequency.exponentialRampToValueAtTime(tipo === 'promover' ? 880 : 587.33, agora + 0.1);
+                gain.gain.setValueAtTime(0.15, agora);
                 gain.gain.exponentialRampToValueAtTime(0.01, agora + 0.15);
                 osc.start(agora);
                 osc.stop(agora + 0.15);
             } else if (tipo === 'comer') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(330, agora);
                 osc.frequency.setValueAtTime(440, agora + 0.08);
                 osc.frequency.setValueAtTime(659.25, agora + 0.16);
-                gain.gain.setValueAtTime(0.15, agora);
+                gain.gain.setValueAtTime(0.2, agora);
                 gain.gain.exponentialRampToValueAtTime(0.01, agora + 0.3);
                 osc.start(agora);
                 osc.stop(agora + 0.3);
-            } else if (tipo === 'vitoria') {
-                const notas = [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50];
-                const tempos = [0, 0.2, 0.4, 0.6, 0.9, 1.1];
-                const duracoes = [0.18, 0.18, 0.18, 0.25, 0.18, 0.5];
-
-                notas.forEach((freq, i) => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(freq, agora + tempos[i]);
-                    gain.gain.setValueAtTime(0.2, agora + tempos[i]);
-                    gain.gain.exponentialRampToValueAtTime(0.01, agora + tempos[i] + duracoes[i]);
-                    osc.start(agora + tempos[i]);
-                    osc.stop(agora + tempos[i] + duracoes[i]);
-                });
             }
         }
 
@@ -353,6 +398,8 @@
         const modalVitoria = document.getElementById('modal-vitoria');
         const textoVencedor = document.getElementById('texto-vencedor');
         const iconeReiGigante = document.getElementById('icone-rei-gigante');
+        const restartButton = document.getElementById('restart-button');
+        const playAgainButton = document.getElementById('play-again-button');
 
         let board = [];
         let turno = 'green';
@@ -361,6 +408,20 @@
         let comidosGreen = 0;
         let comidosBlue = 0;
         let jogoTerminado = false;
+        let capturaObrigatoria = null;
+
+        const nomesTimes = {
+            green: { nome: 'T-Rex Verde', emoji: '🦖' },
+            blue: { nome: 'T-Rex Azul', emoji: '🦕' },
+        };
+
+        function dentroDoTabuleiro(r, c) {
+            return r >= 0 && r < 8 && c >= 0 && c < 8;
+        }
+
+        function direcoesDaPeca(peca) {
+            return peca.king ? [-1, 1] : [peca.player === 'green' ? -1 : 1];
+        }
 
         function inicializarTabuleiro() {
             board = Array(8).fill(null).map(() => Array(8).fill(null));
@@ -386,92 +447,94 @@
             comidosGreen = 0;
             comidosBlue = 0;
             jogoTerminado = false;
-            modalVitoria.style.display = 'none';
+            capturaObrigatoria = null;
+            modalVitoria.hidden = true;
+            statusElement.textContent = `Vez do time: ${nomesTimes[turno].emoji} ${nomesTimes[turno].nome}`;
             atualizarInterface();
         }
 
         function desenharTabuleiro() {
-            boardElement.innerHTML = '';
+            const casaEmFoco = boardElement.contains(document.activeElement)
+                ? {
+                    row: Number(document.activeElement.dataset.row),
+                    col: Number(document.activeElement.dataset.col),
+                }
+                : null;
+            boardElement.replaceChildren();
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
-                    const square = document.createElement('div');
+                    const square = document.createElement('button');
+                    square.type = 'button';
                     square.classList.add('square');
                     square.classList.add((r + c) % 2 === 0 ? 'light' : 'dark');
                     square.dataset.row = r;
                     square.dataset.col = c;
+                    const primeiraCasa = casaEmFoco || { row: 0, col: 0 };
+                    square.tabIndex = r === primeiraCasa.row && c === primeiraCasa.col ? 0 : -1;
 
                     const piece = board[r][c];
+                    const coluna = String.fromCharCode(65 + c);
+                    let descricao = `Casa ${coluna}${8 - r}`;
                     if (piece) {
                         const dinoSpan = document.createElement('span');
-                        dinoSpan.classList.add('dino-3d');
-                        
+                        dinoSpan.classList.add('dino');
+                        dinoSpan.setAttribute('aria-hidden', 'true');
                         if (piece.player === 'green') {
-                            dinoSpan.classList.add('dino-green-team');
-                            dinoSpan.innerHTML = piece.king ? '👑🦖' : '🦖';
+                            dinoSpan.classList.add('dino-green');
+                            dinoSpan.textContent = piece.king ? '👑🦖' : '🦖';
                         } else {
-                            dinoSpan.classList.add('dino-blue-team');
-                            dinoSpan.innerHTML = piece.king ? '👑🦕' : '🦕';
+                            dinoSpan.classList.add('dino-blue');
+                            dinoSpan.textContent = piece.king ? '👑🦕' : '🦕';
                         }
+                        descricao += `, ${nomesTimes[piece.player].nome}${piece.king ? ', dama' : ''}`;
                         square.appendChild(dinoSpan);
                     }
 
                     if (selectedPiece && selectedPiece.row === r && selectedPiece.col === c) {
                         square.classList.add('selected');
+                        square.setAttribute('aria-pressed', 'true');
+                    } else {
+                        square.setAttribute('aria-pressed', 'false');
                     }
 
-                    if (movimentosValidos.some(m => m.row === r && m.col === c)) {
+                    const movimentoDisponivel = movimentosValidos.some(m => m.row === r && m.col === c);
+                    if (movimentoDisponivel) {
                         square.classList.add('highlight');
+                        descricao += ' — movimento disponível';
                     }
+                    square.setAttribute('aria-label', descricao);
+                    square.disabled = jogoTerminado;
 
                     square.addEventListener('click', () => clicarCasa(r, c));
                     boardElement.appendChild(square);
                 }
             }
-
-            casinhaGreenElement.innerHTML = '';
-            for (let i = 0; i < comidosGreen; i++) {
-                const dinoChorando = document.createElement('span');
-                dinoChorando.classList.add('dino-sad', 'dino-green-team');
-                dinoChorando.innerHTML = '🦖💧';
-                casinhaGreenElement.appendChild(dinoChorando);
+            if (casaEmFoco) {
+                boardElement.querySelector(
+                    `[data-row="${casaEmFoco.row}"][data-col="${casaEmFoco.col}"]`
+                )?.focus();
             }
 
-            casinhaBlueElement.innerHTML = '';
-            for (let i = 0; i < comidosBlue; i++) {
-                const dinoChorando = document.createElement('span');
-                dinoChorando.classList.add('dino-sad', 'dino-blue-team');
-                dinoChorando.innerHTML = '🦕💧';
-                casinhaBlueElement.appendChild(dinoChorando);
-            }
+            atualizarContadorCapturas(casinhaGreenElement, comidosGreen, 'verde', 'verdes');
+            atualizarContadorCapturas(casinhaBlueElement, comidosBlue, 'azul', 'azuis');
         }
 
-        function verificarFimDeJogo() {
-            if (comidosGreen === 12) {
-                jogoTerminado = true;
-                textoVencedor.innerHTML = "🏆 T-Rex Azul Suave é o Grande Rei Campeão! 🏆";
-                iconeReiGigante.innerHTML = "👑🦕";
-                modalVitoria.style.display = 'flex';
-                tocarSom('vitoria');
-                return true;
+        function atualizarContadorCapturas(elemento, quantidade, corSingular, corPlural) {
+            let descricao;
+            if (quantidade === 0) {
+                descricao = `Nenhuma peça ${corSingular} capturada.`;
+            } else if (quantidade === 1) {
+                descricao = `1 peça ${corSingular} capturada.`;
+            } else {
+                descricao = `${quantidade} peças ${corPlural} capturadas.`;
             }
-            if (comidosBlue === 12) {
-                jogoTerminado = true;
-                textoVencedor.innerHTML = "🏆 T-Rex Verde Suave é o Grande Rei Campeão! 🏆";
-                iconeReiGigante.innerHTML = "👑🦖";
-                modalVitoria.style.display = 'flex';
-                tocarSom('vitoria');
-                return true;
-            }
-            return false;
+            elemento.textContent = descricao;
+            elemento.setAttribute('aria-label', descricao);
         }
 
         function atualizarInterface() {
-            if (!jogoTerminado) {
-                if (turno === 'green') {
-                    statusElement.innerHTML = "Vez do Time: 🦖 T-Rex Verde Suave";
-                } else {
-                    statusElement.innerHTML = "Vez do Time: 🦕 T-Rex Azul Suave";
-                }
+            if (!jogoTerminado && !selectedPiece && !capturaObrigatoria) {
+                statusElement.textContent = `Vez do time: ${nomesTimes[turno].emoji} ${nomesTimes[turno].nome}`;
             }
             desenharTabuleiro();
         }
@@ -481,8 +544,23 @@
             const piece = board[r][c];
 
             if (piece && piece.player === turno) {
+                if (capturaObrigatoria && (capturaObrigatoria.row !== r || capturaObrigatoria.col !== c)) {
+                    statusElement.textContent = 'Continue a captura com o dinossauro selecionado.';
+                    return;
+                }
                 selectedPiece = { row: r, col: c };
                 movimentosValidos = calcularMovimentos(r, c);
+                if (movimentosValidos.length === 0) {
+                    selectedPiece = null;
+                    statusElement.textContent = todasCapturasDoTurno(turno).length > 0
+                        ? 'A captura é obrigatória. Escolha uma peça com captura disponível.'
+                        : 'Esta peça não tem movimentos disponíveis. Escolha outra.';
+                    desenharTabuleiro();
+                    return;
+                }
+                statusElement.textContent = movimentosValidos.some(m => m.captured)
+                    ? 'Captura obrigatória: escolha uma casa destacada.'
+                    : `Vez do time: ${nomesTimes[turno].emoji} ${nomesTimes[turno].nome}`;
                 atualizarInterface();
                 return;
             }
@@ -494,15 +572,23 @@
                 } else {
                     selectedPiece = null;
                     movimentosValidos = [];
+                    if (capturaObrigatoria) {
+                        selectedPiece = { ...capturaObrigatoria };
+                        movimentosValidos = calcularMovimentos(selectedPiece.row, selectedPiece.col);
+                        statusElement.textContent = 'A captura continua obrigatória com esta peça.';
+                    }
                     atualizarInterface();
                 }
+            } else if (capturaObrigatoria) {
+                statusElement.textContent = 'Continue a captura com o dinossauro selecionado.';
             }
         }
 
-        function calcularMovimentos(r, c) {
+        function calcularCapturas(r, c) {
             const piece = board[r][c];
-            const moves = [];
-            const direcoes = piece.king ? [-1, 1] : (piece.player === 'green' ? [-1] : [1]);
+            if (!piece) return [];
+            const captures = [];
+            const direcoes = direcoesDaPeca(piece);
 
             direcoes.forEach(dr => {
                 [-1, 1].forEach(dc => {
@@ -511,24 +597,104 @@
                     const jumpR = r + dr * 2;
                     const jumpC = c + dc * 2;
 
-                    if (nextR >= 0 && nextR < 8 && nextC >= 0 && nextC < 8) {
-                        const target = board[nextR][nextC];
-                        if (!target) {
-                            moves.push({ row: nextR, col: nextC, captured: null });
-                        } else if (target.player !== piece.player) {
-                            if (jumpR >= 0 && jumpR < 8 && jumpC >= 0 && jumpC < 8 && !board[jumpR][jumpC]) {
-                                moves.push({ row: jumpR, col: jumpC, captured: { row: nextR, col: nextC } });
-                            }
-                        }
+                    if (
+                        dentroDoTabuleiro(jumpR, jumpC) &&
+                        board[nextR]?.[nextC]?.player &&
+                        board[nextR][nextC].player !== piece.player &&
+                        !board[jumpR][jumpC]
+                    ) {
+                        captures.push({
+                            row: jumpR,
+                            col: jumpC,
+                            captured: { row: nextR, col: nextC },
+                        });
                     }
                 });
             });
 
+            return captures;
+        }
+
+        function todasCapturasDoTurno(player) {
+            const captures = [];
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if (board[r][c]?.player === player) {
+                        for (const move of calcularCapturas(r, c)) {
+                            captures.push({ fromRow: r, fromCol: c, ...move });
+                        }
+                    }
+                }
+            }
+            return captures;
+        }
+
+        function calcularMovimentos(r, c) {
+            const piece = board[r][c];
+            if (!piece || piece.player !== turno) return [];
+            if (capturaObrigatoria && (capturaObrigatoria.row !== r || capturaObrigatoria.col !== c)) return [];
+
+            const captures = calcularCapturas(r, c);
+            if (capturaObrigatoria || todasCapturasDoTurno(turno).length > 0) return captures;
+
+            const moves = [];
+            for (const dr of direcoesDaPeca(piece)) {
+                for (const dc of [-1, 1]) {
+                    const nextR = r + dr;
+                    const nextC = c + dc;
+                    if (dentroDoTabuleiro(nextR, nextC) && !board[nextR][nextC]) {
+                        moves.push({ row: nextR, col: nextC, captured: null });
+                    }
+                }
+            }
             return moves;
+        }
+
+        function haMovimentos(player) {
+            const existeCaptura = todasCapturasDoTurno(player).length > 0;
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if (board[r][c]?.player !== player) continue;
+                    if (existeCaptura && calcularCapturas(r, c).length > 0) return true;
+                    if (!existeCaptura && calcularMovimentosLivres(r, c).length > 0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function calcularMovimentosLivres(r, c) {
+            const piece = board[r][c];
+            if (!piece) return [];
+            const moves = [];
+            for (const dr of direcoesDaPeca(piece)) {
+                for (const dc of [-1, 1]) {
+                    const nextR = r + dr;
+                    const nextC = c + dc;
+                    if (dentroDoTabuleiro(nextR, nextC) && !board[nextR][nextC]) {
+                        moves.push({ row: nextR, col: nextC });
+                    }
+                }
+            }
+            return moves;
+        }
+
+        function encerrarJogo(vencedor) {
+            jogoTerminado = true;
+            const time = nomesTimes[vencedor];
+            statusElement.textContent = `Fim de jogo: ${time.nome} venceu!`;
+            textoVencedor.textContent = `Vitória do ${time.nome}!`;
+            iconeReiGigante.textContent = `👑${time.emoji}`;
+            modalVitoria.hidden = false;
+            atualizarInterface();
+            tocarSom('vitoria');
+            playAgainButton.focus();
         }
 
         function executarMovimento(fromR, fromC, toR, toC, captured) {
             const piece = board[fromR][fromC];
+            const eraDama = piece.king;
             board[toR][toC] = piece;
             board[fromR][fromC] = null;
 
@@ -546,22 +712,85 @@
                 tocarSom('mover');
             }
 
-            if (piece.player === 'green' && toR === 0) piece.king = true;
-            if (piece.player === 'blue' && toR === 7) piece.king = true;
-
-            if (!verificarFimDeJogo()) {
-                turno = turno === 'green' ? 'blue' : 'green';
-                selectedPiece = null;
-                movimentosValidos = [];
-                atualizarInterface();
+            const linhaDePromocao = piece.player === 'green' ? 0 : 7;
+            const promovida = !eraDama && toR === linhaDePromocao;
+            if (promovida) {
+                piece.king = true;
+                tocarSom('promover');
             }
+
+            selectedPiece = null;
+            movimentosValidos = [];
+
+            const adversario = piece.player === 'green' ? 'blue' : 'green';
+            const pecasAdversarias = board.flat().filter(p => p?.player === adversario).length;
+            if (pecasAdversarias === 0) {
+                encerrarJogo(piece.player);
+                return;
+            }
+
+            if (captured && !promovida) {
+                const proximasCapturas = calcularCapturas(toR, toC);
+                if (proximasCapturas.length > 0) {
+                    capturaObrigatoria = { row: toR, col: toC };
+                    selectedPiece = { ...capturaObrigatoria };
+                    movimentosValidos = proximasCapturas;
+                    statusElement.textContent = 'Continue capturando com a mesma peça.';
+                    atualizarInterface();
+                    return;
+                }
+            }
+
+            capturaObrigatoria = null;
+            turno = turno === 'green' ? 'blue' : 'green';
+            if (!haMovimentos(turno)) {
+                encerrarJogo(piece.player);
+                return;
+            }
+
+            statusElement.textContent = `Vez do time: ${nomesTimes[turno].emoji} ${nomesTimes[turno].nome}`;
+            atualizarInterface();
         }
 
         function reiniciarJogo() {
-            tocarSom('mover');
             inicializarTabuleiro();
+            boardElement.querySelector('.square')?.focus();
         }
 
+        animationToggle.addEventListener('change', () => {
+            document.body.classList.toggle('animacoes-ativas', animationToggle.checked);
+        });
+        soundToggle.addEventListener('change', () => {
+            if (!audioCtx) return;
+            const acaoAudio = soundToggle.checked ? audioCtx.resume() : audioCtx.suspend();
+            acaoAudio.catch(error => console.error('Não foi possível atualizar o áudio.', error));
+        });
+        modalVitoria.addEventListener('keydown', event => {
+            if (event.key === 'Tab') {
+                event.preventDefault();
+                playAgainButton.focus();
+            }
+        });
+        boardElement.addEventListener('keydown', event => {
+            const direcoes = {
+                ArrowUp: [-1, 0],
+                ArrowDown: [1, 0],
+                ArrowLeft: [0, -1],
+                ArrowRight: [0, 1],
+            };
+            const direcao = direcoes[event.key];
+            if (!direcao) return;
+            const casaAtual = event.target.closest('.square');
+            if (!casaAtual) return;
+            const row = Number(casaAtual.dataset.row) + direcao[0];
+            const col = Number(casaAtual.dataset.col) + direcao[1];
+            if (!dentroDoTabuleiro(row, col)) return;
+            event.preventDefault();
+            boardElement.querySelector(`[data-row="${row}"][data-col="${col}"]`)?.focus();
+        });
+
+        restartButton.addEventListener('click', reiniciarJogo);
+        playAgainButton.addEventListener('click', reiniciarJogo);
         inicializarTabuleiro();
     </script>
 </body>

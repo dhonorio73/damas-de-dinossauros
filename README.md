@@ -1,43 +1,28 @@
-# 🦖 Damas de Dinossauros 3D
+# Damas de Dinossauros
 
-## 📋 Sobre o Projeto
-O **Damas de Dinossauros 3D** é um jogo de tabuleiro clássico reimaginado com uma temática lúdica e imersiva, desenvolvido inteiramente com tecnologias web nativas (**HTML5, CSS3 e JavaScript**). O projeto une lógica de programação, manipulação de DOM, estilização avançada e interatividade para proporcionar uma experiência visualmente rica e fluida diretamente no navegador.
+Jogo de damas para duas pessoas, com tema de dinossauros e uma interface pensada para ser simples, previsível e ajustável. Funciona diretamente no navegador, sem instalação ou dependências.
 
----
+## Jogar
 
-## 🛠️ Metodologia de Criação e Desenvolvimento
+Abra [`index.html`](./index.html) em um navegador. Para publicar uma versão jogável, ative o GitHub Pages nas configurações do repositório, selecionando a branch `main` e a pasta `/ (root)`.
 
-O desenvolvimento seguiu uma abordagem modular e estruturada em etapas:
+## Recursos
 
-1. **Conceituação e Planejamento:**
-   - Definição das regras clássicas do jogo de damas adaptadas para uma interface digital intuitiva.
-   - Escolha da identidade visual temática (Dinossauros / Era Pré-Histórica) para engajamento dos usuários.
+- Captura obrigatória, capturas em sequência e promoção a dama.
+- Detecção de fim de jogo por captura de todas as peças ou falta de jogadas.
+- Sons e animações opcionais, desligados por padrão.
+- Instruções simples, sem cronômetro, destaque de jogadas e reinício de partida.
+- Interface responsiva para celular, tablet e computador.
+- Casas do tabuleiro acessíveis por teclado e com rótulos para leitores de tela.
 
-2. **Estruturação e Layout (HTML5):**
-   - Construção da matriz do tabuleiro utilizando marcação semântica.
-   - Organização de elementos de interface para placar, turnos e botões de controle de partida.
+O projeto busca oferecer opções de conforto sensorial, mas as preferências variam de pessoa para pessoa. Ele não é uma ferramenta terapêutica nem substitui orientação profissional.
 
-3. **Estilização e Imersão Visual (CSS3):**
-   - Criação de animações de presença personalizadas (`@keyframes`) para destacar as peças principais (como o rei e a rainha) com efeitos de brilho e escala (`transform` e `filter: drop-shadow`).
-   - Design responsivo para adaptação a diferentes tamanhos de tela.
+## Tecnologias
 
-4. **Lógica de Jogo e Interatividade (JavaScript):**
-   - Implementação da matriz de estados do tabuleiro.
-   - Regras de movimentação de peças comuns, capturas e promoção a damas.
-   - Gestão de turnos entre os jogadores e validação de jogadas válidas.
+- **HTML5** — estrutura da página, controles e elementos acessíveis.
+- **CSS3** — layout responsivo, tabuleiro, estilos visuais e preferência por movimento reduzido.
+- **JavaScript (ES6+)** — regras, estado da partida, interação e atualização da interface.
+- **Web Audio API** — geração local de efeitos sonoros simples, sem arquivos de áudio externos.
+- **Git e GitHub** — versionamento e hospedagem do código.
 
----
-
-## 🚀 Tecnologias Utilizadas
-- **HTML5:** Estrutura e marcação da aplicação.
-- **CSS3:** Estilização, animações visuais e layout responsivo.
-- **JavaScript (ES6+):** Lógica de regras do jogo, manipulação de eventos e controle de fluxo.
-- **GitHub & GitHub Pages:** Controle de versão e hospedagem contínua.
-
----
-
-## 🎯 Aplicação e Objetivos
-- **Portfólio:** Demonstração prática de competências em desenvolvimento frontend, lógica com JavaScript e criatividade em design de interfaces web.
-- **Aprendizado Contínuo:** Aplicação de conceitos avançados de manipulação de elementos dinâmicos no navegador e estruturação de projetos limpos.
-
----
+Não são necessários Node.js, bibliotecas, compilação ou instalação de pacotes.
