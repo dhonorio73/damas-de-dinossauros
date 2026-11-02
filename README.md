@@ -8,6 +8,12 @@ Jogo de damas para duas pessoas, com tema de dinossauros e uma interface pensada
 
 Para executar localmente, abra [`index.html`](./index.html) em um navegador.
 
+## Como jogar
+
+1. Abra o jogo e escolha as opções de som e animação que preferir.
+2. Duas pessoas alternam as jogadas; selecione uma peça e depois a casa de destino.
+3. Quando houver captura disponível, ela é obrigatória. O jogo identifica o fim da partida.
+
 ## Recursos
 
 - Captura obrigatória, capturas em sequência e promoção a dama.
